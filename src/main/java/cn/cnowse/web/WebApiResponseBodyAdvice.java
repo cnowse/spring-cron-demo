@@ -53,9 +53,9 @@ public class WebApiResponseBodyAdvice implements ResponseBodyAdvice<Object> {
             return body;
         }
         if (Void.TYPE.equals(gpt)) {
-            return ApiResult.success();
+            return ApiResult.ok();
         }
-        return ApiResult.success(body);
+        return ApiResult.ok(body);
     }
 
 }
