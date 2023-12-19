@@ -11,6 +11,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -103,6 +104,11 @@ public class CommonConfig {
         om.setDefaultPropertyInclusion(
                 JsonInclude.Value.construct(JsonInclude.Include.NON_NULL, JsonInclude.Include.NON_NULL));
         return om;
+    }
+
+    @Bean
+    public MappingJackson2HttpMessageConverter configMappingJackson2HttpMessageConverter(ObjectMapper om) {
+        return new MappingJackson2HttpMessageConverter(om);
     }
 
     /**
