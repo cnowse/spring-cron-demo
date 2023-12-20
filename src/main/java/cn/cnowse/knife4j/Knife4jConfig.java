@@ -13,7 +13,7 @@ import io.swagger.v3.oas.models.info.Info;
  * @author Jeong Geol 2023-12-18
  */
 @Configuration
-public class knife4jConfig {
+public class Knife4jConfig {
 
     @Bean
     public OpenAPI customOpenAPI() {
