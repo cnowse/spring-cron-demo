@@ -69,11 +69,24 @@ public class CommonConfig {
     @Bean
     public ObjectMapper configObjectMapper() {
         ObjectMapper om = new ObjectMapper();
+        /*
+         设置属性的可见性，这里将所有属性都设置为可见
+         所有类的所有属性都将被序列化和反序列化，即使它们是私有的。这确保了在序列化和反序列化时，所有属性都会被处理
+         */
         om.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.DEFAULT);
+        // 禁用在反序列化时对未知属性的错误检查，这允许 JSON 中包含 Java 对象中没有的额外属性
         om.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        /*
+         禁用默认的类型处理，提高序列化和反序列化的安全性
+         默认情况下，Jackson 会在序列化时添加类型信息，以便在反序列化时正确还原对象
+         禁用默认类型处理可以防止潜在的安全风险，如 Java 反序列化漏洞
+         */
         om.deactivateDefaultTyping();
+        // 所有日期时间值在序列化和反序列化时都将使用 GMT+8 时区
         om.setTimeZone(TimeZone.getTimeZone("GMT+8"));
+        // 设置输出格式为缩进，使得生成的JSON更易读
         om.configure(SerializationFeature.INDENT_OUTPUT, true);
+        // 在序列化时，只有非空属性会被包含在 JSON 中，为空的属性将被忽略。这有助于减少输出 JSON 的大小，同时保留实际有值的属性
         om.setDefaultPropertyInclusion(
                 JsonInclude.Value.construct(JsonInclude.Include.NON_NULL, JsonInclude.Include.NON_NULL));
         // 自动发现所有的模块
@@ -100,9 +113,6 @@ public class CommonConfig {
         numberModule.addSerializer(Long.class, new LongJsonSerializer());
         numberModule.addSerializer(long.class, new LongJsonSerializer());
         om.registerModule(numberModule);
-
-        om.setDefaultPropertyInclusion(
-                JsonInclude.Value.construct(JsonInclude.Include.NON_NULL, JsonInclude.Include.NON_NULL));
         return om;
     }
 

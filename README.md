@@ -9,6 +9,7 @@
 - Spring Data JPA 查询条件封装。
 - knife4j 在 Spring Boot 2 与 Spring Boot 3 下的配置。
 - 整合封装 Java 邮件服务。
+- 整合 Mybatis Plus。
 - 整合封装 Redis。
 - 统一结果封装处理。
 - 整合封装 WebClient。

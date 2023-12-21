@@ -51,6 +51,12 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
+            <version>3.5.3.1</version>
+        </dependency>
+
         <!-- Spring Boot 3 配置 knife4j，使用 swagger 文档 -->
         <dependency>
             <groupId>com.github.xiaoymin</groupId>
