@@ -20,7 +20,7 @@ public class Knife4jConfig {
         return new OpenAPI().info(new Info()
                 .title("cnowse spring").version("1.0")
                 .contact(new Contact().name("Jeong Geol"))
-                .description("充电管理平台接口文档")
+                .description("cnowse spring example")
                 .termsOfService("https://www.cnowse.cn/"));
     }
 
