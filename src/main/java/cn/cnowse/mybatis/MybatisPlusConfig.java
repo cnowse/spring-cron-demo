@@ -56,7 +56,7 @@ public class MybatisPlusConfig {
      */
     @Bean
     public MetaObjectHandler metaObjectHandler() {
-        return new CreateAndUpdateMetaObjectHandler();
+        return new CustomizeMetaObjectHandler();
     }
 
 }
