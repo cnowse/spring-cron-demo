@@ -32,6 +32,8 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalTimeSerializer;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -106,12 +108,12 @@ public class CommonConfig {
         om.registerModule(javaTimeModule);
 
         SimpleModule numberModule = new SimpleModule();
-        numberModule.addSerializer(BigDecimal.class, new BigDecimalJsonSerializer());
-        numberModule.addSerializer(Double.class, new DoubleJsonSerializer());
-        numberModule.addSerializer(double.class, new DoubleJsonSerializer());
+        numberModule.addSerializer(BigDecimal.class, BigDecimalJsonSerializer.INSTANCE);
+        numberModule.addSerializer(Double.class, DoubleJsonSerializer.INSTANCE);
+        numberModule.addSerializer(double.class, DoubleJsonSerializer.INSTANCE);
         // long 转 String，解决前端 long 溢出问题
-        numberModule.addSerializer(Long.class, new LongJsonSerializer());
-        numberModule.addSerializer(long.class, new LongJsonSerializer());
+        numberModule.addSerializer(Long.class, LongJsonSerializer.INSTANCE);
+        numberModule.addSerializer(long.class, LongJsonSerializer.INSTANCE);
         om.registerModule(numberModule);
         return om;
     }
@@ -126,7 +128,10 @@ public class CommonConfig {
      *
      * @author Jeong Geol
      */
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
     private static class BigDecimalJsonSerializer extends JsonSerializer<BigDecimal> {
+
+        public static final BigDecimalJsonSerializer INSTANCE = new BigDecimalJsonSerializer();
 
         @Override
         public void serialize(BigDecimal value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
@@ -144,7 +149,10 @@ public class CommonConfig {
      *
      * @author Jeong Geol
      */
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
     private static class DoubleJsonSerializer extends JsonSerializer<Double> {
+
+        public static final DoubleJsonSerializer INSTANCE = new DoubleJsonSerializer();
 
         @Override
         public void serialize(Double value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
@@ -162,7 +170,10 @@ public class CommonConfig {
      *
      * @author Jeong Geol
      */
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
     private static class LongJsonSerializer extends JsonSerializer<Long> {
+
+        public static final LongJsonSerializer INSTANCE = new LongJsonSerializer();
 
         @Override
         public void serialize(Long value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
@@ -170,6 +181,31 @@ public class CommonConfig {
                 gen.writeNull();
             } else {
                 gen.writeString(String.valueOf(value));
+            }
+        }
+
+    }
+
+    /**
+     * 判断 long 范围是否在 JS Number.MAX_SAFE_INTEGER 与 Number.MIN_SAFE_INTEGER 范围内，
+     * 如果在范围内，仍序列化为 long，不在范围内则序列化为 string
+     *
+     * @author Jeong Geol
+     */
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    private static class CheckLongRangeJsonSerializer extends JsonSerializer<Long> {
+
+        public static final CheckLongRangeJsonSerializer INSTANCE = new CheckLongRangeJsonSerializer();
+        private static final long MAX_SAFE_INTEGER = 9007199254740991L;
+        private static final long MIN_SAFE_INTEGER = -9007199254740991L;
+
+        @Override
+        public void serialize(Long value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
+            // 超出范围 序列化位字符串
+            if (value > MIN_SAFE_INTEGER && value < MAX_SAFE_INTEGER) {
+                gen.writeNumber(value);
+            } else {
+                gen.writeString(value.toString());
             }
         }
 
