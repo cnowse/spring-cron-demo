@@ -32,6 +32,7 @@ public class UseCaptcha {
 
     private static final String MATH_TYPE = "math";
     private static final String CHAR_TYPE = "char";
+    private static final String JPG = "jpg";
 
     private final RedisHelper redis;
 
@@ -74,10 +75,8 @@ public class UseCaptcha {
         graphics.fillRect(0, 0, biMage.getWidth(), biMage.getHeight());
         graphics.drawImage(image, 0, 0, null);
         graphics.dispose();
-        try (
-            FastByteArrayOutputStream os = new FastByteArrayOutputStream()
-        ) {
-            ImageIO.write(biMage, "jpg", os);
+        try (FastByteArrayOutputStream os = new FastByteArrayOutputStream()) {
+            ImageIO.write(biMage, JPG, os);
             CaptchaDTO captchaDTO = new CaptchaDTO();
             captchaDTO.setCaptchaCodeKey(imgKey);
             captchaDTO.setCaptchaCodeImg(Base64.getEncoder().encodeToString(os.toByteArray()));
