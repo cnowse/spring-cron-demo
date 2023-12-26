@@ -23,10 +23,11 @@ public class JavaMailSenderHelper {
     private final JavaMailSender javaMailSender;
 
     /** 通过 application.properties 的方式配置 JavaMailSender 可以通过这样的方式取 from 账户 */
-    @Value("${spring.mail.username}")
-    private String from;
+    /* @Value("${spring.mail.username}")
+    private String from; */
 
     public void sendMail(String email, String msg) {
+        String from = "cnowse@163.com";
         try {
             // 创建一个邮件消息
             MimeMessage message = javaMailSender.createMimeMessage();

@@ -6,6 +6,7 @@
 
 # 简介
 
+- 整合kaptcha验证码。
 - Spring Data JPA 查询条件封装。
 - knife4j 在 Spring Boot 2 与 Spring Boot 3 下的配置。
 - 整合封装 Java 邮件服务。
