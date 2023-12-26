@@ -12,6 +12,7 @@
 - 整合 Mybatis Plus。
 - 整合封装 Redis。
 - 整合 SaToken。
+- 自定义注解校验。
 - 统一结果封装处理。
 - 整合封装 WebClient。
 - 常用配置。
