@@ -3,6 +3,7 @@ package cn.cnowse;
 import cn.cnowse.captcha.CaptchaDTO;
 import cn.cnowse.captcha.CaptchaMathTextCreator;
 import cn.cnowse.captcha.UseCaptcha;
+import cn.cnowse.redis.RTHelper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
@@ -19,6 +20,16 @@ class SpringConDemoApplicationTests {
 
     @Autowired
     private UseCaptcha useCaptcha;
+
+    @Autowired
+    private RTHelper rtHelper;
+
+    @Test
+    void name2() {
+        TestModel testModel = new TestModel();
+        testModel.setStr("aaabbb");
+        rtHelper.set("v1:v2:123", testModel);
+    }
 
     @Test
     void contextLoads() throws JsonProcessingException {
