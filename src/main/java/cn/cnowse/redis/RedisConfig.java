@@ -34,16 +34,17 @@ import cn.cnowse.CommonConfig;
 @EnableConfigurationProperties(CacheProperties.class)
 public class RedisConfig {
 
+    /** Redis key 分隔符 */
     public static final String COLON = ":";
 
     @Bean
     public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory factory, ObjectMapper om) {
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(factory);
-        // 使用 String 序列化方式，序列化 KEY 。
+        // 使用 String 序列化方式，序列化 key
         redisTemplate.setKeySerializer(RedisSerializer.string());
         redisTemplate.setHashKeySerializer(RedisSerializer.string());
-        // 使用 JSON 序列化方式（库是 Jackson ），序列化 VALUE 。
+        // 使用 JSON 序列化方式（库是 Jackson ），使用的是 CommonConfig 中配置的 ObjectMapper 序列化 value
         Jackson2JsonRedisSerializer<Object> serializer = new Jackson2JsonRedisSerializer<>(om, Object.class);
         redisTemplate.setValueSerializer(serializer);
         redisTemplate.setHashValueSerializer(serializer);
@@ -72,7 +73,7 @@ public class RedisConfig {
             }
             return cacheName + COLON;
         });
-        // 设置使用 JSON 序列化方式
+        // 设置使用 JSON 序列化方式，使用 CommonConfig 中配置的 ObjectMapper
         config = config.serializeValuesWith(RedisSerializationContext.SerializationPair
                 .fromSerializer(new Jackson2JsonRedisSerializer<>(om, Object.class)));
 
