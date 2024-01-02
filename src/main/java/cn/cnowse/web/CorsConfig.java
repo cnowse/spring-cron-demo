@@ -1,7 +1,6 @@
 package cn.cnowse.web;
 
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
@@ -11,7 +10,7 @@ import org.springframework.web.filter.CorsFilter;
  *
  * @author Jeong Geol 2023-12-19
  */
-@Configuration
+// @Configuration
 public class CorsConfig {
 
     @Bean
