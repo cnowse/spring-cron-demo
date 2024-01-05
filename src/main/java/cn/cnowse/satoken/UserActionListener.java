@@ -3,15 +3,18 @@ package cn.cnowse.satoken;
 import org.springframework.stereotype.Component;
 
 import cn.dev33.satoken.listener.SaTokenListener;
+import cn.dev33.satoken.listener.SaTokenListenerForSimple;
 import cn.dev33.satoken.stp.SaLoginModel;
 
 /**
- * SaToken 监听用户行为，可以在发生登录，退出等一系列行为时做一些操作
+ * SaToken 监听用户行为，可以在发生登录，退出等一系列行为时做一些操作 <br/>
+ * 1.实现 {@link SaTokenListener} 接口需要实现所有方法； <br/>
+ * 2.继承 {@link SaTokenListenerForSimple} 可以选择重写某些方法； <br/>
  *
  * @author Jeong Geol 2023-12-25
  */
 @Component
-public class UserActionListener implements SaTokenListener {
+public class UserActionListener extends SaTokenListenerForSimple {
 
     @Override
     public void doLogin(String loginType, Object loginId, String tokenValue, SaLoginModel loginModel) {

@@ -2,6 +2,8 @@ package cn.cnowse.satoken;
 
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+
 import cn.dev33.satoken.dao.SaTokenDao;
 
 /**
@@ -9,6 +11,7 @@ import cn.dev33.satoken.dao.SaTokenDao;
  * 
  * @author Jeong Geol 2023-12-25
  */
+@Component
 public class SaTokenDaoImpl implements SaTokenDao {
 
     @Override

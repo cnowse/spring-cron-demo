@@ -19,7 +19,13 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
@@ -29,8 +35,6 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalTimeSerializer;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -105,14 +109,14 @@ public class CommonConfig {
         om.registerModule(javaTimeModule);
 
         SimpleModule numberModule = new SimpleModule();
-        numberModule.addSerializer(BigDecimal.class, BigDecimalJsonSerializer.INSTANCE);
-        numberModule.addSerializer(Double.class, DoubleJsonSerializer.INSTANCE);
-        numberModule.addSerializer(double.class, DoubleJsonSerializer.INSTANCE);
+        numberModule.addSerializer(BigDecimal.class, new BigDecimalJsonSerializer());
+        numberModule.addSerializer(Double.class, new DoubleJsonSerializer());
+        numberModule.addSerializer(double.class, new DoubleJsonSerializer());
         // long 转 String，解决前端 long 溢出问题
-        numberModule.addSerializer(Long.class, LongJsonSerializer.INSTANCE);
-        numberModule.addSerializer(long.class, LongJsonSerializer.INSTANCE);
+        numberModule.addSerializer(Long.class, new LongJsonSerializer());
+        numberModule.addSerializer(long.class, new LongJsonSerializer());
         // 反序列化时删除 String 中的 html 标签
-        numberModule.addDeserializer(String.class, JsonHtmlXssTrimDeSerializer.INSTANCE);
+        numberModule.addDeserializer(String.class, new JsonHtmlXssTrimDeSerializer());
         om.registerModule(numberModule);
         return om;
     }
@@ -127,10 +131,7 @@ public class CommonConfig {
      *
      * @author Jeong Geol
      */
-    @NoArgsConstructor(access = AccessLevel.PRIVATE)
     private static class BigDecimalJsonSerializer extends JsonSerializer<BigDecimal> {
-
-        public static final BigDecimalJsonSerializer INSTANCE = new BigDecimalJsonSerializer();
 
         @Override
         public void serialize(BigDecimal value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
@@ -148,10 +149,7 @@ public class CommonConfig {
      *
      * @author Jeong Geol
      */
-    @NoArgsConstructor(access = AccessLevel.PRIVATE)
     private static class DoubleJsonSerializer extends JsonSerializer<Double> {
-
-        public static final DoubleJsonSerializer INSTANCE = new DoubleJsonSerializer();
 
         @Override
         public void serialize(Double value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
@@ -169,10 +167,7 @@ public class CommonConfig {
      *
      * @author Jeong Geol
      */
-    @NoArgsConstructor(access = AccessLevel.PRIVATE)
     private static class LongJsonSerializer extends JsonSerializer<Long> {
-
-        public static final LongJsonSerializer INSTANCE = new LongJsonSerializer();
 
         @Override
         public void serialize(Long value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
@@ -191,10 +186,8 @@ public class CommonConfig {
      *
      * @author Jeong Geol
      */
-    @NoArgsConstructor(access = AccessLevel.PRIVATE)
     private static class CheckLongRangeJsonSerializer extends JsonSerializer<Long> {
 
-        public static final CheckLongRangeJsonSerializer INSTANCE = new CheckLongRangeJsonSerializer();
         private static final long MAX_SAFE_INTEGER = 9007199254740991L;
         private static final long MIN_SAFE_INTEGER = -9007199254740991L;
 
@@ -216,10 +209,8 @@ public class CommonConfig {
      *
      * @author Jeong Geol
      */
-    @NoArgsConstructor(access = AccessLevel.PRIVATE)
     public static class JsonHtmlXssTrimDeSerializer extends JsonDeserializer<String> {
 
-        public static final JsonHtmlXssTrimDeSerializer INSTANCE = new JsonHtmlXssTrimDeSerializer();
         private static final String RE_HTML_MARK = "(<[^<]*?>)|(<\\s*?/[^<]*?>)|(<[^<]*?/\\s*?>)";
 
         @Override
