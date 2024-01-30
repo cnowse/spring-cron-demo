@@ -86,7 +86,7 @@ public class CommonConfig {
          */
         om.deactivateDefaultTyping();
         // 所有日期时间值在序列化和反序列化时都将使用 GMT+8 时区
-        om.setTimeZone(TimeZone.getTimeZone("GMT+8"));
+        om.setTimeZone(TimeZone.getTimeZone("Asia/Shanghai"));
         // 设置输出格式为缩进，使得生成的JSON更易读
         om.configure(SerializationFeature.INDENT_OUTPUT, true);
         // 在序列化时，只有非空属性会被包含在 JSON 中，为空的属性将被忽略。这有助于减少输出 JSON 的大小，同时保留实际有值的属性
