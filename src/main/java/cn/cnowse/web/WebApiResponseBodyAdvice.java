@@ -45,7 +45,7 @@ public class WebApiResponseBodyAdvice implements ResponseBodyAdvice<Object> {
             @NonNull Class<? extends HttpMessageConverter<?>> ht, @NonNull ServerHttpRequest request,
             @NonNull ServerHttpResponse response) {
 
-        if (body instanceof ApiResult) {
+        if (body instanceof BaseResult) {
             return body;
         }
         Type gpt = rt.getGenericParameterType();
@@ -53,9 +53,9 @@ public class WebApiResponseBodyAdvice implements ResponseBodyAdvice<Object> {
             return body;
         }
         if (Void.TYPE.equals(gpt)) {
-            return ApiResult.ok();
+            return BaseResult.ok();
         }
-        return ApiResult.ok(body);
+        return BaseResult.ok(body);
     }
 
 }

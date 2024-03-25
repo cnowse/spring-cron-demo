@@ -1,5 +1,6 @@
 package cn.cnowse.knife4j;
 
+import io.swagger.v3.oas.models.servers.Server;
 import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -7,6 +8,8 @@ import org.springframework.context.annotation.Configuration;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
+
+import java.util.Collections;
 
 /**
  * Spring Boot 3 下配置 knife4j 文档
@@ -22,7 +25,8 @@ public class Knife4jConfig {
                 .title("cnowse spring").version("1.0")
                 .contact(new Contact().name("Jeong Geol"))
                 .description("cnowse spring example")
-                .termsOfService("https://www.cnowse.cn/"));
+                .termsOfService("https://www.cnowse.cn/"))
+                .servers(Collections.singletonList(new Server().url("http://192.168.0.2:8081")));
     }
 
     @Bean
